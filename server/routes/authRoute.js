@@ -10,7 +10,7 @@ router.post("/api/signIn", async (req, res) => {
     if (!email || !password) {
         return res.json({ error: "parameter missing" });
     }
-    if (emailExists(email)) {
+    if (await emailExists(email)) {
         return res.json({ error: "Email already in use" });
     }
     password = await encryptPassword(password);
@@ -20,8 +20,8 @@ router.post("/api/signIn", async (req, res) => {
     } catch (e) {
         return res.json({ error: "database error" });
     }
-    req.session.logIn = user._id;
-    return res.json(newUser);
+    const token = auth.createToken(newUser.email);
+    return res.json({ token });
 });
 
 router.post("/api/logIn", async (req, res) => {
@@ -34,13 +34,13 @@ router.post("/api/logIn", async (req, res) => {
         return res.json({ error: "Wrong Email" });
     }
     if (await decryptPassword(password, user.password)) {
-        req.session.logIn = user._id;
-        return res.json("success");
+        const token = auth.createToken(email);
+        return res.json({ token });
     } else res.json({ error: "Wrong Password" });
 });
 
-router.get("/api/logOut", async (req, res) => {
-    req.session = null;
+router.get("/api/logOut", auth.requireAuth, async (req, res) => {
+    res.json({ token: null });
 });
 
 module.exports = router;

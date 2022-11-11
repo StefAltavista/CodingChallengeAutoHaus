@@ -4,8 +4,9 @@
     "description": "react project boilerplate",
     "main": "index.js",
     "scripts": {
+        "devStart": "nodemon ./server/server.js",
         "start": "node ./server/server.js",
-        "run dev": "webpack-dev-server --mode development --open --hot",
+        "dev": "webpack-dev-server --mode development --open --hot",
         "build": "webpack --mode production"
     },
     "author": "stef altavista",
@@ -17,6 +18,7 @@
         "jsonwebtoken": "^8.5.1",
         "mini-css-extract-plugin": "^2.6.1",
         "mongoose": "^6.7.2",
+        "nodemon": "^2.0.20",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.4.3"
