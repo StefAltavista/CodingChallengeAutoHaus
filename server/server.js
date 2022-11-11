@@ -1,10 +1,11 @@
 const express = require("express");
+const app = express();
+const authRoutes = require("./routes/authRoute");
 const path = require("path");
 const cookieSession = require("cookie-session");
-const app = express();
-const PORT = process.env.PORT || 6001;
+
 const db = require("../database/db.js");
-const { exists } = require("./middleware/user");
+const PORT = process.env.PORT || 6001;
 
 const secret =
     process.env.NODE_ENV == "production"
@@ -21,12 +22,9 @@ const cookieSessionMiddleware = cookieSession({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(cookieSessionMiddleware);
+app.use(authRoutes);
 
-app.post("./api/newuser", exists, async (req, res) => {
-    const { email, password } = req.body;
-    const newUser = await db.newUser({ email, password });
-    res.json(newUser);
-});
+setTimeout(async () => {}, 2000);
 
 db.connect(secret);
 app.listen(PORT, async () => {
