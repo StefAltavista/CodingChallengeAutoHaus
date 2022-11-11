@@ -1,4 +1,5 @@
 import React from "react";
+import { GlobalProvider } from "./globalState/context";
 
 export default function App() {
     return (

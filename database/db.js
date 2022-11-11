@@ -1,33 +1,58 @@
-// import mongoose from "mongoose";
 const mongoose = require("mongoose");
-const { User } = require("./models/Users.js");
-// import User from "./models/Users";
+const { User } = require("./models/User.js");
 
-const secret =
-    process.env.NODE_ENV == "production"
-        ? process.env
-        : require("../config.json");
-const mongoUri = `mongodb+srv://${secret.DB_ACCESS_USERNAME}:${secret.DB_ACCESS_KEY}@cluster1.xgf2w5g.mongodb.net/?retryWrites=true&w=majority`;
+const connect = (secret) => {
+    const mongoUri = `mongodb+srv://${secret.DB_ACCESS_USERNAME}:${secret.DB_ACCESS_KEY}@cluster1.xgf2w5g.mongodb.net/?retryWrites=true&w=majority`;
+    mongoose.connect(mongoUri);
+    mongoose.connection.on("connected", () => {
+        console.log("Connected to mongo");
+    });
+    mongoose.connection.on("error", (err) => {
+        console.log("error connecting to mongo", err);
+    });
+};
 
-mongoose.connect(mongoUri);
+const newUser = async ({ email, password }) => {
+    return await tryCatch(() =>
+        User.create({
+            email,
+            password,
+        })
+    );
+};
 
-mongoose.connection.on("connected", () => {
-    console.log("Connected to mongo");
-});
-mongoose.connection.on("error", (err) => {
-    console.log("error connecting to mongo", err);
-});
+const addInfo = async ({ userName, firstName, lastName, address, role }) => {
+    return await tryCatch(() =>
+        User.updateOne(
+            { email },
+            { userName, firstName, lastName, address, role }
+        )
+    );
+};
+const deleteUser = async ({ email }) => {
+    return await tryCatch(() => User.deleteOne({ email }));
+};
 
-// TEST
-// const user1 = User.create({
-//     id: 0,
-//     username: "fistUser",
-//     password: "123",
-// });
+const findUser = async ({ email }) => {
+    return await tryCatch(() => User.find({ email }).exec());
+};
 
-// const action = async () => {
-//     const getFirst = await User.findOne({});
-//     console.log(getFirst);
-// };
+module.exports = {
+    connect,
+    newUser,
+    addInfo,
+    deleteUser,
+    findUser,
+};
 
-// action();
+const tryCatch = async (fn) => {
+    let success;
+    try {
+        success = await fn();
+    } catch (error) {
+        console.log("DB ERROR:", error);
+        return error;
+    }
+    console.log("DB query successful");
+    return success;
+};
