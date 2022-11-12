@@ -21,13 +21,14 @@ router.post("/api/signIn", async (req, res) => {
         return res.json({ error: "database error" });
     }
     const token = auth.createToken(newUser.email);
+    req.session.access = token;
     return res.json({ token });
 });
 
 router.post("/api/logIn", async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        res.json({ error: "parameter missing" });
+        return res.json({ error: "parameter missing" });
     }
     let user = await emailExists(email);
     if (!user) {
@@ -35,11 +36,17 @@ router.post("/api/logIn", async (req, res) => {
     }
     if (await decryptPassword(password, user.password)) {
         const token = auth.createToken(email);
+        req.session.access = token;
         return res.json({ token });
     } else res.json({ error: "Wrong Password" });
 });
 
+router.get("/api/validate", async (req, res) => {
+    const response = await auth.verification(req.session.access);
+    return res.json({ ...response });
+});
 router.get("/api/logOut", auth.requireAuth, async (req, res) => {
+    req.session = null;
     res.json({ token: null });
 });
 

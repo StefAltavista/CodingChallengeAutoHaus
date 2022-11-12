@@ -6,9 +6,11 @@ export const GlobalContext = createContext();
 const initialState = {};
 
 export function GlobalProvider({ children }) {
-    const [state, dispatch] = useReducer(globalReducer, initialState);
+    const [globalState, dispatch] = useReducer(globalReducer, initialState);
 
     return (
-        <GlobalContext value={{ state, dispatch }}>{children}</GlobalContext>
+        <GlobalContext.Provider value={{ globalState, dispatch }}>
+            {children}
+        </GlobalContext.Provider>
     );
 }

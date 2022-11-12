@@ -2,7 +2,7 @@ const path = require("path");
 const HTMLwebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
-    entry: "./public/src/start.js",
+    entry: ["./public/src/start.js"],
     output: {
         path: path.join(__dirname, "/dist"),
         filename: "bundle.js",
@@ -12,13 +12,13 @@ module.exports = {
         new MiniCssExtractPlugin(),
     ],
     devServer: {
-        static: path.join(__dirname, "client"),
+        static: path.join(__dirname, "public"),
         proxy: {
             "/": {
-                target: "http://localhost:6001",
+                target: "http://localhost:5001",
             },
         },
-        port: "6000",
+        port: "5000",
     },
 
     module: {

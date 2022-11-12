@@ -1,10 +1,9 @@
 import React from "react";
-import { GlobalProvider } from "./globalState/context";
 
-export default function App() {
+export default function App({ token }) {
     return (
         <>
-            <h1>React Initialize Project</h1>
+            <h1>App</h1>
         </>
     );
 }

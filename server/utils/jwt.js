@@ -4,14 +4,14 @@ const secret =
         ? process.env
         : require("../../config.json");
 
-createToken = (username) => {
+const createToken = (username) => {
     const maxAge = 60 * 30; // 30 minutes
     return jwt.sign({ username }, secret.JWT_KEY, {
         expiresIn: maxAge,
     });
 };
 
-requireAuth = (req, res, next) => {
+const requireAuth = (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization;
 
@@ -35,7 +35,26 @@ requireAuth = (req, res, next) => {
     }
 };
 
+const verification = (token) => {
+    return token
+        ? jwt.verify(token, secret.JWT_KEY, (err, username) => {
+              if (err) {
+                  if (err.name === "TokenExpiredError") {
+                      console.log("token expired");
+                      return { error: "Session expired" };
+                  } else {
+                      console.log("fake token");
+                      return { error: "fake token" };
+                  }
+              } else {
+                  return { token };
+              }
+          })
+        : { error: "No Access" };
+};
+
 module.exports = {
     createToken,
     requireAuth,
+    verification,
 };
