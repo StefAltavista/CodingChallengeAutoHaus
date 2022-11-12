@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const authRoutes = require("./routes/authRoute");
+const userRoutes = require("./routes/userRoute");
+
 const path = require("path");
 const cookieSession = require("cookie-session");
 
@@ -23,6 +25,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(cookieSessionMiddleware);
 app.use(authRoutes);
+app.use(userRoutes);
 
 setTimeout(async () => {}, 2000);
 

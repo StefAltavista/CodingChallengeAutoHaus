@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import * as ReactDOMClient from "react-dom/client";
 import App from "./components/App";
 import Welcome from "./components/Welcome";
@@ -11,7 +11,6 @@ const validate = async () => {
     fetch("/api/validate")
         .then((res) => res.json())
         .then((res) => {
-            console.log(res);
             if (res.token) {
                 app = root.render(
                     <GlobalProvider>

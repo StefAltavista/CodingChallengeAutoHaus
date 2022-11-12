@@ -24,7 +24,7 @@ export default function Authenticate({ type, checkAuth }) {
                         setResponse(
                             "Ops! Something went wrong, please try again"
                         );
-                } else if (res.token) {
+                } else if (res.success) {
                     checkAuth();
                 } else {
                     setResponse("Ops! Something went wrong, please try again");

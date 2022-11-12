@@ -33,7 +33,7 @@ const deleteUser = async ({ email }) => {
     return await tryCatch(() => User.deleteOne({ email }));
 };
 
-const findUser = async ({ email }) => {
+const findUserByEmail = async ({ email }) => {
     return await tryCatch(() => User.find({ email }).exec());
 };
 
@@ -42,7 +42,7 @@ module.exports = {
     newUser,
     addInfo,
     deleteUser,
-    findUser,
+    findUserByEmail,
 };
 
 const tryCatch = async (fn) => {

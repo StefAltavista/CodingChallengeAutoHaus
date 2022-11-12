@@ -22,7 +22,7 @@ router.post("/api/signIn", async (req, res) => {
     }
     const token = auth.createToken(newUser.email);
     req.session.access = token;
-    return res.json({ token });
+    return res.json({ success: true });
 });
 
 router.post("/api/logIn", async (req, res) => {
@@ -37,12 +37,12 @@ router.post("/api/logIn", async (req, res) => {
     if (await decryptPassword(password, user.password)) {
         const token = auth.createToken(email);
         req.session.access = token;
-        return res.json({ token });
+        return res.json({ success: true });
     } else res.json({ error: "Wrong Password" });
 });
 
-router.get("/api/validate", async (req, res) => {
-    const response = await auth.verification(req.session.access);
+router.get("/api/validate", (req, res) => {
+    const response = auth.verification(req.session.access);
     return res.json({ ...response });
 });
 router.get("/api/logOut", auth.requireAuth, async (req, res) => {

@@ -1,12 +1,15 @@
 export default function globalReducer(state, action) {
     switch (action.type) {
-        case "logIn":
+        case "SET_TOKEN":
+            return { ...state, token: action.payload };
+
+        case "SET_USER":
             return {
                 ...state,
-                token: action.payload.token,
-                email: action.payload.email,
+                ...action.payload,
             };
+
         default:
-            break;
+            return { ...state };
     }
 }
