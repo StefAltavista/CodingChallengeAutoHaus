@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
 import AddData from "./AddData";
+import Banner from "./Banner";
 
 export default function Home() {
     const { globalState, dispatch } = useContext(GlobalContext);
@@ -8,13 +9,7 @@ export default function Home() {
 
     return (
         <>
-            <div id="header">
-                <p>Home</p>
-                <div>
-                    <p>Profile</p>
-                    <p>Log Out</p>
-                </div>
-            </div>
+            <Banner></Banner>
 
             {!submitted && globalState.userData && (
                 <AddData

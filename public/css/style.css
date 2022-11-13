@@ -8,6 +8,10 @@ body {
     background-color: rgb(0, 89, 127);
     color: whitesmoke;
 }
+a {
+    color: whitesmoke;
+    text-decoration: none;
+}
 button {
     color: rgb(0, 57, 81);
 }
@@ -78,6 +82,22 @@ button {
     margin-top: 20px;
 }
 
+/* ---------- Banner ------------ */
+#banner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px;
+    border-bottom: 1px solid black;
+}
+#comands {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#comands div {
+    margin-left: 10px;
+}
 /* ---------- Add Data Modal ------------ */
 
 #addDataModal {

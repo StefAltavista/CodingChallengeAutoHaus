@@ -8,6 +8,8 @@ export default function globalReducer(state, action) {
                 ...state,
                 ...action.payload,
             };
+        case "LOG_OUT":
+            return {};
 
         default:
             return { ...state };

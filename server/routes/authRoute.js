@@ -47,7 +47,7 @@ router.get("/api/validate", (req, res) => {
 });
 router.get("/api/logOut", auth.requireAuth, async (req, res) => {
     req.session = null;
-    res.json({ token: null });
+    res.json({ success: "User succesfully logged out" });
 });
 
 module.exports = router;
