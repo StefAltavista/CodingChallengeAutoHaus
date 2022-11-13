@@ -10,9 +10,9 @@ export default function useDataCheck() {
         const { username, firstname, lastname, address, role } =
             globalState.userData;
         if (!username || !firstname || !lastname || !address || !role) {
-            let temp = {};
+            let temp = [];
             for (const [key, value] of Object.entries(globalState.userData)) {
-                !value ? (temp = { ...temp, [key]: value }) : null;
+                !value ? (temp = [...temp, key]) : null;
             }
             setMissingData(temp);
         } else setMissingData(false);

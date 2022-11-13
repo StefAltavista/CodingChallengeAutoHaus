@@ -4,24 +4,19 @@ import useDataCheck from "../hooks/useDataCheck";
 
 export default function AddData({ submitted }) {
     const { globalState, dispatch } = useContext(GlobalContext);
-    const { userData } = globalState;
     const [step, setStep] = useState(0);
-    const [username, setUsername] = useState(userData.username);
-    const [firstname, setFirstname] = useState(userData.firstname);
-    const [lastname, setLastname] = useState(userData.lastname);
-    const [address, setAddress] = useState(userData.address);
-    const [role, setRole] = useState(userData.role);
+    const [data, setData] = useState();
+    const [input, setInput] = useState("");
     let missing = useDataCheck();
 
-    const submit = () => {
-        let data = { username, firstname, lastname, address, role };
+    const submit = (x) => {
         fetch("/api/data", {
             headers: {
                 "content-type": "application/json",
                 Authorization: globalState.token,
             },
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify({ ...data, [x]: input }),
         })
             .then((res) => res.json())
             .then((res) => console.log(res));
@@ -30,20 +25,11 @@ export default function AddData({ submitted }) {
         submitted();
     };
 
-    const next = () => {
+    const next = (x) => {
+        setData({ ...data, [x]: input });
+        setInput("");
         setStep(step + 1);
     };
-    useEffect(() => {
-        if (username && step == 0) {
-            setStep(1);
-        } else if (firstname && lastname && step == 1) {
-            setStep(2);
-        } else if (address && step == 2) {
-            setStep(3);
-        } else if (role && step == 3) {
-            setStep(4);
-        }
-    }, [step, username, firstname, lastname, address, role]);
 
     return (
         missing && (
@@ -52,89 +38,57 @@ export default function AddData({ submitted }) {
                     <p id="close" onClick={submitted}>
                         X
                     </p>
+                    <p>We need some more information about you</p>
 
-                    {step == 0 && "username" in missing ? (
-                        <div>
-                            <p>Choose your Username</p>
-                            <input
-                                value={username || ""}
-                                type="text"
-                                onChange={({ target }) =>
-                                    setUsername(target.value)
-                                }
-                            />
-                        </div>
-                    ) : (
-                        next && <></>
-                    )}
-
-                    {step == 1 && ("firstname" || "lastname" in missing) ? (
-                        <>
-                            <div>
-                                <p>First Name</p>
-                                <input
-                                    value={firstname || ""}
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setFirstname(target.value)
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <p>Last Name</p>
-                                <input
-                                    value={lastname || ""}
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setLastname(target.value)
-                                    }
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        next && <></>
-                    )}
-                    {step == 2 && "address" in missing ? (
-                        <>
-                            <div>
-                                <p>Address</p>
-                                <input
-                                    value={address || ""}
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setAddress(target.value)
-                                    }
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        next && <></>
-                    )}
-                    {step == 3 && "role" in missing ? (
-                        <>
-                            <div>
-                                <p>Role</p>
-                                <input
-                                    value={role || ""}
-                                    type="text"
-                                    onChange={({ target }) =>
-                                        setRole(target.value)
-                                    }
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        next && <></>
-                    )}
-
-                    {step < 3 && <button onClick={next}>Next</button>}
-                    {step == 3 && (
-                        <>
-                            <button onClick={submit}>Submit</button>
-                        </>
-                    )}
+                    {missing &&
+                        missing.map((x, idx) => {
+                            let length = missing.length;
+                            let title = getTitle(x);
+                            const field = (
+                                <div key={idx}>
+                                    <p>{title}</p>
+                                    <input
+                                        value={input}
+                                        type="text"
+                                        onChange={({ target }) =>
+                                            setInput(target.value)
+                                        }
+                                    />
+                                    {step < length - 1 && (
+                                        <button onClick={() => next(x)}>
+                                            Next
+                                        </button>
+                                    )}
+                                    {step == length - 1 && (
+                                        <>
+                                            <button onClick={() => submit(x)}>
+                                                Submit
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            );
+                            return step == idx ? field : null;
+                        })}
                 </div>
             </div>
         )
     );
 }
+
+const getTitle = (x) => {
+    switch (x) {
+        case "username":
+            return "Choose your User Name";
+        case "firstname":
+            return "First Name";
+        case "lastname":
+            return "Last Name";
+        case "address":
+            return "Address";
+        case "role":
+            return "What is your Role in the company?";
+        default:
+            return "whatever";
+    }
+};

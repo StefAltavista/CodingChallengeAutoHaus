@@ -1,9 +1,7 @@
 import { useContext, useEffect } from "react";
 import { GlobalContext } from "../globalState/context";
-export default async function getUser(token) {
-    const { globalState, dispatch } = useContext(GlobalContext);
-
-    console.log(globalState);
+export default async function useSetUser(token) {
+    const { dispatch } = useContext(GlobalContext);
     useEffect(() => {
         fetch("/api/user", {
             headers: { Authorization: token },
@@ -25,6 +23,5 @@ export default async function getUser(token) {
                     },
                 });
             });
-        // : null;
     }, []);
 }
