@@ -121,3 +121,39 @@ button {
 #addDataModal button {
     width: 100px;
 }
+
+/* ---------- List Employees------------ */
+#listComponent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#listEmployees {
+    text-align: center;
+    width: 70%;
+    border: 1px solid black;
+}
+#listHead {
+    display: grid;
+    grid-template-columns: 0.2fr repeat(6, 1fr);
+    background-color: rgb(90, 118, 130);
+}
+
+#list div:nth-child(even) {
+    background-color: rgb(175, 195, 255);
+    color: black;
+}
+#list div:nth-child(odd) {
+    background-color: whitesmoke;
+    color: black;
+}
+#list div:nth-child(even):hover,
+#list div:nth-child(odd):hover {
+    background-color: rgb(225, 112, 112);
+}
+
+#listBody {
+    display: grid;
+    grid-template-columns: 0.2fr repeat(6, 1fr);
+    cursor: pointer;
+}

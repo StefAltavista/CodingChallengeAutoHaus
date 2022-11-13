@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const authRoutes = require("./routes/authRoute");
-const userRoutes = require("./routes/userRoute");
+const authRoutes = require("./routes/authRouter");
+const userRoutes = require("./routes/userRouter");
+const commandsRoutes = require("./routes/comandsRouter");
 
 const path = require("path");
 const cookieSession = require("cookie-session");
@@ -26,9 +27,10 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(cookieSessionMiddleware);
 app.use(authRoutes);
 app.use(userRoutes);
-
-setTimeout(async () => {}, 2000);
-
+app.use(commandsRoutes);
+app.get("*", (req, res) => {
+    res.redirect("/");
+});
 db.connect(secret);
 app.listen(PORT, async () => {
     console.log(`Server listening, port:${PORT}`);

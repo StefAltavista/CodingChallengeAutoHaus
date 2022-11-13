@@ -10,7 +10,7 @@ export default function Banner() {
             </Link>
             <div id="comands">
                 <div>
-                    <Link to="/">
+                    <Link to="/profile">
                         <p>Profile</p>
                     </Link>
                 </div>

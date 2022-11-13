@@ -39,7 +39,6 @@ const addData = async ({
         User.findOneAndUpdate(
             { email },
             { username, firstname, lastname, address, role },
-
             function (err, res) {
                 console.log("error", err);
                 console.log("resolution", res);
@@ -54,6 +53,11 @@ const deleteUser = async ({ email }) => {
 const findUserByEmail = async ({ email }) => {
     return await tryCatch(() => User.find({ email }).exec());
 };
+const listAllUsers = async () => {
+    return await tryCatch(() =>
+        User.find({}, "username firstname lastname email role address").exec()
+    );
+};
 
 module.exports = {
     connect,
@@ -61,6 +65,7 @@ module.exports = {
     addData,
     deleteUser,
     findUserByEmail,
+    listAllUsers,
 };
 
 const tryCatch = async (fn) => {
