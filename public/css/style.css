@@ -147,6 +147,11 @@ button {
     background-color: whitesmoke;
     color: black;
 }
+
+#list #address {
+    font-size: 10px;
+}
+
 #list div:nth-child(even):hover,
 #list div:nth-child(odd):hover {
     background-color: rgb(225, 112, 112);

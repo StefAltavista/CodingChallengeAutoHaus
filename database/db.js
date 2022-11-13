@@ -18,11 +18,6 @@ const newUser = async ({ email, password }) => {
         User.create({
             email,
             password,
-            username: "",
-            firstname: "",
-            lastname: "",
-            address: "",
-            role: "",
         })
     );
 };
@@ -38,11 +33,7 @@ const addData = async ({
     return await tryCatch(() =>
         User.findOneAndUpdate(
             { email },
-            { username, firstname, lastname, address, role },
-            function (err, res) {
-                console.log("error", err);
-                console.log("resolution", res);
-            }
+            { username, firstname, lastname, address, role }
         )
     );
 };

@@ -10,6 +10,7 @@ export default function AddData({ submitted }) {
     let missing = useDataCheck();
 
     const submit = (x) => {
+        console.log(data);
         fetch("/api/data", {
             headers: {
                 "content-type": "application/json",
@@ -26,6 +27,7 @@ export default function AddData({ submitted }) {
     };
 
     const next = (x) => {
+        console.log(input);
         setData({ ...data, [x]: input });
         setInput("");
         setStep(step + 1);
@@ -44,31 +46,49 @@ export default function AddData({ submitted }) {
                         missing.map((x, idx) => {
                             let length = missing.length;
                             let title = getTitle(x);
-                            const field = (
-                                <div key={idx}>
-                                    <p>{title}</p>
-                                    <input
-                                        value={input}
-                                        type="text"
-                                        onChange={({ target }) =>
-                                            setInput(target.value)
-                                        }
-                                    />
-                                    {step < length - 1 && (
-                                        <button onClick={() => next(x)}>
-                                            Next
-                                        </button>
-                                    )}
-                                    {step == length - 1 && (
-                                        <>
-                                            <button onClick={() => submit(x)}>
-                                                Submit
+                            let inputField;
+                            if (x == "address") {
+                                inputField = addressForm({
+                                    x,
+                                    idx,
+                                    title,
+                                    input,
+                                    setInput,
+                                    step,
+                                    length,
+                                    next,
+                                });
+                            } else {
+                                inputField = (
+                                    <div key={idx}>
+                                        <p>{title}</p>
+                                        <input
+                                            value={input}
+                                            type="text"
+                                            onChange={({ target }) =>
+                                                setInput(target.value)
+                                            }
+                                        />
+
+                                        {step < length - 1 && (
+                                            <button onClick={() => next(x)}>
+                                                Next
                                             </button>
-                                        </>
-                                    )}
-                                </div>
-                            );
-                            return step == idx ? field : null;
+                                        )}
+                                        {step == length - 1 && (
+                                            <>
+                                                <button
+                                                    onClick={() => submit(x)}
+                                                >
+                                                    Submit
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                );
+                            }
+
+                            return step == idx ? inputField : null;
                         })}
                 </div>
             </div>
@@ -91,4 +111,68 @@ const getTitle = (x) => {
         default:
             return "whatever";
     }
+};
+
+const addressForm = ({
+    x,
+    idx,
+    title,
+    input,
+    setInput,
+    step,
+    length,
+    next,
+}) => {
+    return (
+        <div key={idx}>
+            <p>{title}</p>
+
+            <input
+                placeholder="Street"
+                value={input.street || ""}
+                type="text"
+                onChange={({ target }) =>
+                    setInput({ ...input, street: target.value })
+                }
+            />
+            <input
+                placeholder="Nr."
+                value={input.number || ""}
+                type="text"
+                onChange={({ target }) =>
+                    setInput({ ...input, number: target.value })
+                }
+            />
+            <input
+                placeholder="Postcode"
+                value={input.postcode || ""}
+                type="text"
+                onChange={({ target }) =>
+                    setInput({ ...input, postcode: target.value })
+                }
+            />
+            <input
+                placeholder="City"
+                value={input.city || ""}
+                type="text"
+                onChange={({ target }) =>
+                    setInput({ ...input, city: target.value })
+                }
+            />
+            <input
+                placeholder="Coutry"
+                value={input.country || ""}
+                type="text"
+                onChange={({ target }) =>
+                    setInput({ ...input, country: target.value })
+                }
+            />
+            {step < length - 1 && <button onClick={() => next(x)}>Next</button>}
+            {step == length - 1 && (
+                <>
+                    <button onClick={() => submit(x)}>Submit</button>
+                </>
+            )}
+        </div>
+    );
 };

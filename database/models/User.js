@@ -7,7 +7,13 @@ const usersSchema = new Schema({
     username: String,
     firstname: String,
     lastname: String,
-    address: String,
+    address: {
+        street: String,
+        number: Number,
+        postcode: String,
+        city: String,
+        country: String,
+    },
     role: String,
 });
 
