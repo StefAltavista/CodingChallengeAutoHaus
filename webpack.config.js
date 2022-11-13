@@ -2,7 +2,7 @@ const path = require("path");
 const HTMLwebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
-    entry: ["./public/src/start.js"],
+    entry: ["./public/src/start.js", "./public/css/style.css"],
     output: {
         path: path.join(__dirname, "/dist"),
         filename: "bundle.js",

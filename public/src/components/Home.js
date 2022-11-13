@@ -1,16 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
 import AddData from "./AddData";
-import useDataCheck from "../hooks/useDataCheck";
 
 export default function Home() {
     const { globalState, dispatch } = useContext(GlobalContext);
+    const [submitted, setSubmitted] = useState(false);
 
     return (
         <>
-            <p>Home</p>
+            <div id="header">
+                <p>Home</p>
+                <div>
+                    <p>Profile</p>
+                    <p>Log Out</p>
+                </div>
+            </div>
 
-            {useDataCheck && <AddData />}
+            {!submitted && globalState.userData && (
+                <AddData
+                    submitted={() => {
+                        setSubmitted(true);
+                    }}
+                />
+            )}
         </>
     );
 }

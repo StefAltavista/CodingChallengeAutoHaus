@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GlobalContext } from "../globalState/context";
-import getUser from "../hooks/getUser";
 import Home from "./Home";
+import getUser from "../hooks/getUser";
 
 export default function App({ token }) {
     const { dispatch } = useContext(GlobalContext);
-    useEffect(() => {
-        dispatch({ type: "SET_TOKEN", payload: token });
-    }, []);
+    getUser(token);
 
-    getUser();
+    // useEffect(() => {
+    //     dispatch({ type: "SET_TOKEN", payload: token });
+    // }, []);
 
     return (
         <>

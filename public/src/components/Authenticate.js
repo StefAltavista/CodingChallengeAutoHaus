@@ -34,12 +34,11 @@ export default function Authenticate({ type, checkAuth }) {
         return;
     };
     return (
-        <div id="Authenticate">
-            <h5>{type.toUpperCase()}</h5>
+        <div id="authenticate">
             <div>
                 <p>Email</p>
                 <input
-                    typle="email"
+                    type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 ></input>
@@ -47,12 +46,12 @@ export default function Authenticate({ type, checkAuth }) {
             <div>
                 <p>Password</p>
                 <input
-                    typle="password"
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 ></input>
             </div>
-            <button onClick={enter}>Submit</button>
+            <button onClick={enter}>{type.toUpperCase()}</button>
             {response && <p>{response}</p>}
         </div>
     );
