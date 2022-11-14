@@ -20,7 +20,7 @@ router.post("/api/signIn", async (req, res) => {
     } catch (e) {
         return res.json({ error: "database error" });
     }
-    const token = auth.createToken(newUser.email);
+    const token = auth.createToken(newUser._id);
     req.session.access = token;
     return res.json({ success: true });
 });

@@ -1,14 +1,5 @@
 import React from "react";
-export default function addressForm({
-    x,
-    idx,
-    title,
-    input,
-    setInput,
-    step,
-    length,
-    next,
-}) {
+export default function AddressForm({ idx, title, input, setInput }) {
     return (
         <div key={idx}>
             <p>{title}</p>
@@ -46,19 +37,13 @@ export default function addressForm({
                 }
             />
             <input
-                placeholder="Coutry"
+                placeholder="Country"
                 value={input.country || ""}
                 type="text"
                 onChange={({ target }) =>
                     setInput({ ...input, country: target.value })
                 }
             />
-            {step < length - 1 && <button onClick={() => next(x)}>Next</button>}
-            {step == length - 1 && (
-                <>
-                    <button onClick={() => submit(x)}>Submit</button>
-                </>
-            )}
         </div>
     );
 }

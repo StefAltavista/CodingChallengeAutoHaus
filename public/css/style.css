@@ -32,6 +32,7 @@ button {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 37, 184, 0.213);
+    backdrop-filter: blur(3px);
 }
 
 /* ---------- Authentication ------------ */
@@ -197,4 +198,21 @@ button {
 
 #row #address p {
     margin: 0;
+}
+
+#profilePage #address {
+    display: flex;
+}
+#profilePage #address p {
+    margin-right: 5px;
+}
+
+/* ---------- New Employee Modal------------ */
+#addEmployeeModal {
+    position: absolute;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 700px;
+    height: 500px;
 }

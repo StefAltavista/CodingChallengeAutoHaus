@@ -1,77 +1,108 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
-import addressForm from "./addressForm";
+import AddressForm from "./addressForm";
 
-export default function AddData({ submitted }) {
+export default function AddData({ submitted, user, user_Id }) {
     const { globalState, dispatch } = useContext(GlobalContext);
     const [step, setStep] = useState(0);
     const [data, setData] = useState();
     const [input, setInput] = useState("");
+    const [error, setError] = useState();
+    let missingData;
+    let url;
+
+    switch (user) {
+        case "this":
+            missingData = globalState.missingData;
+            url = "/api/data";
+            break;
+        case "newUser":
+            missingData = ["role", "username", "address"];
+            url = "/api/employeedata";
+            break;
+    }
 
     const submit = (x) => {
-        fetch("/api/data", {
+        fetch(url, {
             headers: {
                 "content-type": "application/json",
                 Authorization: globalState.token,
+                userid: user_Id,
             },
             method: "POST",
             body: JSON.stringify({ ...data, [x]: input }),
         })
             .then((res) => res.json())
-            .then((res) => console.log(res));
-        dispatch({ type: "SET_USER", payload: { data } });
-        setStep(0);
-        submitted();
+            .then((res) => {
+                console.log("here", res);
+                if (res.success) {
+                    user == "this"
+                        ? dispatch({ type: "SET_USER", payload: { data } })
+                        : null;
+                    setStep(0);
+                    submitted();
+                } else {
+                    setError(res.error);
+                }
+            });
     };
 
     const next = (x) => {
-        console.log(input);
         setData({ ...data, [x]: input });
         setInput("");
         setStep(step + 1);
     };
-
+    const skip = () => {
+        setInput("");
+        setStep(step + 1);
+    };
     return (
-        globalState.missingData && (
-            <div id="modalBackground">
-                <div id="addDataModal">
-                    <p id="close" onClick={submitted}>
-                        X
-                    </p>
-                    <p>We need some more information about you</p>
+        missingData && (
+            <>
+                <p>Please add the following informations</p>
 
-                    {globalState.missingData &&
-                        globalState.missingData.map((x, idx) => {
-                            let length = globalState.missingData.length;
-                            let title = getTitle(x);
-                            let inputField;
-                            if (x == "address") {
-                                inputField = addressForm({
-                                    x,
-                                    idx,
-                                    title,
-                                    input,
-                                    setInput,
-                                    step,
-                                    length,
-                                    next,
-                                });
-                            } else {
-                                inputField = (
-                                    <div key={idx}>
-                                        <p>{title}</p>
-                                        <input
-                                            value={input}
-                                            type="text"
-                                            onChange={({ target }) =>
-                                                setInput(target.value)
-                                            }
-                                        />
-
+                {missingData &&
+                    missingData.map((x, idx) => {
+                        let length = missingData.length;
+                        let title = getTitle(x);
+                        let inputField;
+                        if (x == "address") {
+                            inputField = (
+                                <AddressForm
+                                    key={idx}
+                                    title={title}
+                                    input={input}
+                                    setInput={setInput}
+                                ></AddressForm>
+                            );
+                        } else {
+                            inputField = (
+                                <div key={idx}>
+                                    <p>{title}</p>
+                                    <input
+                                        value={input}
+                                        type="text"
+                                        onChange={({ target }) =>
+                                            setInput(target.value)
+                                        }
+                                    />
+                                </div>
+                            );
+                        }
+                        if (step == idx) {
+                            return (
+                                <div key="commands">
+                                    {inputField}
+                                    <div>
                                         {step < length - 1 && (
-                                            <button onClick={() => next(x)}>
-                                                Next
-                                            </button>
+                                            <div id="comands">
+                                                <button onClick={() => next(x)}>
+                                                    Add
+                                                </button>
+                                                <button onClick={() => skip()}>
+                                                    Skip
+                                                </button>
+                                            </div>
                                         )}
                                         {step == length - 1 && (
                                             <>
@@ -83,13 +114,11 @@ export default function AddData({ submitted }) {
                                             </>
                                         )}
                                     </div>
-                                );
-                            }
-
-                            return step == idx ? inputField : null;
-                        })}
-                </div>
-            </div>
+                                </div>
+                            );
+                        } else <></>;
+                    })}
+            </>
         )
     );
 }
@@ -97,7 +126,7 @@ export default function AddData({ submitted }) {
 const getTitle = (x) => {
     switch (x) {
         case "username":
-            return "Choose your User Name";
+            return "Choose a Username";
         case "firstname":
             return "First Name";
         case "lastname":
@@ -105,7 +134,7 @@ const getTitle = (x) => {
         case "address":
             return "Address";
         case "role":
-            return "What is your Role in the company?";
+            return "Role in the company";
         default:
             return "whatever";
     }

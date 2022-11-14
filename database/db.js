@@ -14,7 +14,6 @@ const connect = (secret) => {
 };
 
 const newUser = async (body) => {
-    console.log("new", body);
     return await tryCatch(() =>
         User.create({
             ...body,
@@ -23,12 +22,19 @@ const newUser = async (body) => {
 };
 
 const addData = async (body) => {
-    return await tryCatch(() =>
-        User.findOneAndUpdate({ email: body.email }, { ...body.data })
-    );
+    console.log("THIS", body);
+    return await tryCatch(() => {
+        let user = User.findOneAndUpdate({ _id: body._id }, { ...body.data });
+        console.log("db:");
+        return user;
+    });
 };
-const deleteUser = async ({ email }) => {
-    return await tryCatch(() => User.deleteOne({ email }));
+const deleteUser = async ({ _id }) => {
+    return await tryCatch(() => User.deleteOne({ _id }));
+};
+
+const findUser = async ({ _id }) => {
+    return await tryCatch(() => User.find({ _id }).exec());
 };
 
 const findUserByEmail = async ({ email }) => {
@@ -45,6 +51,7 @@ module.exports = {
     newUser,
     addData,
     deleteUser,
+    findUser,
     findUserByEmail,
     listAllUsers,
 };

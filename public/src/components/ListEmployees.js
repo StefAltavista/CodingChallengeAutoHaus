@@ -53,9 +53,7 @@ export default function ListEmployees() {
                                         if (y == "address") {
                                             return (
                                                 <RenderAddress
-                                                    row={x}
-                                                    field={y}
-                                                    index={idxy}
+                                                    user={x}
                                                     key={idxy}
                                                 ></RenderAddress>
                                             );

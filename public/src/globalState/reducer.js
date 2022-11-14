@@ -11,7 +11,6 @@ export default function globalReducer(state, action) {
         case "LOG_OUT":
             return {};
         case "MISSING_DATA":
-            console.log("missingDATA");
             return { ...state, missingData: action.payload };
 
         default:

@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 
 const encryptPassword = (password) => {
-    console.log("here");
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(5, (err, salt) => {
             if (err) {
@@ -13,7 +12,7 @@ const encryptPassword = (password) => {
                     console.log("crypt err2", err);
                     reject({ e: err });
                 }
-                console.log(hash);
+
                 resolve(hash);
             });
         });
