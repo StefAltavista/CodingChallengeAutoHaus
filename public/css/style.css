@@ -5,11 +5,11 @@
 }
 
 body {
-    background-color: rgb(0, 89, 127);
-    color: whitesmoke;
+    /* background-color: rgb(241, 250, 253); */
+    color: rgb(7, 30, 66);
 }
 a {
-    color: whitesmoke;
+    /* color: whitesmoke; */
     text-decoration: none;
 }
 button {
@@ -31,17 +31,24 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.213);
+    background-color: rgba(0, 37, 184, 0.213);
 }
 
 /* ---------- Authentication ------------ */
 
 #welcome {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 80vh;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 89, 127);
+    color: whitesmoke;
 }
 #welcomeHeader {
     margin-right: 40px;
@@ -50,12 +57,13 @@ button {
     padding: 50px;
     padding-top: 0;
     border-radius: 10px;
-    background-color: rgb(74, 90, 119);
-
     width: 400px;
 }
 
 #authType {
+    position: absolute;
+    top: 0;
+    right: 30px;
     display: flex;
     justify-content: flex-end;
     cursor: pointer;
@@ -68,7 +76,9 @@ button {
     text-align: center;
     width: 70px;
 }
-
+#authenticate {
+    overflow: hidden;
+}
 #authenticate p {
     font-size: 25px;
 }
@@ -82,18 +92,38 @@ button {
     margin-top: 20px;
 }
 
+.signIn {
+    color: rgb(81, 99, 132);
+    background-color: aliceblue;
+}
+.logIn {
+    color: aliceblue;
+    background-color: rgb(81, 110, 132);
+}
+
 /* ---------- Banner ------------ */
 #banner {
+    background-color: rgb(0, 89, 127);
+    color: aliceblue;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 20px;
+    padding: 10px;
+    margin: 0px 20px 0px 20px;
     border-bottom: 1px solid black;
+}
+#banner a {
+    color: aliceblue;
+}
+
+#comands div {
+    border-left: 1px solid aliceblue;
+    padding-left: 10px;
 }
 #comands {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 #comands div {
     margin-left: 10px;
@@ -136,29 +166,35 @@ button {
 #listHead {
     display: grid;
     grid-template-columns: 0.2fr repeat(6, 1fr);
-    background-color: rgb(90, 118, 130);
+    background-color: rgb(96, 134, 150);
+    color: black;
 }
 
-#list div:nth-child(even) {
+#list #row:nth-child(even) {
     background-color: rgb(175, 195, 255);
-    color: black;
 }
-#list div:nth-child(odd) {
+#list #row:nth-child(odd) {
     background-color: whitesmoke;
-    color: black;
 }
 
 #list #address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: 10px;
 }
 
-#list div:nth-child(even):hover,
-#list div:nth-child(odd):hover {
+#list #row:nth-child(odd):hover,
+#list #row:nth-child(even):hover {
     background-color: rgb(225, 112, 112);
 }
 
-#listBody {
+#row {
     display: grid;
     grid-template-columns: 0.2fr repeat(6, 1fr);
     cursor: pointer;
+}
+
+#row #address p {
+    margin: 0;
 }

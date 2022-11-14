@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
-import useDataCheck from "../hooks/useDataCheck";
+import addressForm from "./addressForm";
 
 export default function AddData({ submitted }) {
     const { globalState, dispatch } = useContext(GlobalContext);
     const [step, setStep] = useState(0);
     const [data, setData] = useState();
     const [input, setInput] = useState("");
-    let missing = useDataCheck();
 
     const submit = (x) => {
-        console.log(data);
         fetch("/api/data", {
             headers: {
                 "content-type": "application/json",
@@ -34,7 +32,7 @@ export default function AddData({ submitted }) {
     };
 
     return (
-        missing && (
+        globalState.missingData && (
             <div id="modalBackground">
                 <div id="addDataModal">
                     <p id="close" onClick={submitted}>
@@ -42,9 +40,9 @@ export default function AddData({ submitted }) {
                     </p>
                     <p>We need some more information about you</p>
 
-                    {missing &&
-                        missing.map((x, idx) => {
-                            let length = missing.length;
+                    {globalState.missingData &&
+                        globalState.missingData.map((x, idx) => {
+                            let length = globalState.missingData.length;
                             let title = getTitle(x);
                             let inputField;
                             if (x == "address") {
@@ -111,68 +109,4 @@ const getTitle = (x) => {
         default:
             return "whatever";
     }
-};
-
-const addressForm = ({
-    x,
-    idx,
-    title,
-    input,
-    setInput,
-    step,
-    length,
-    next,
-}) => {
-    return (
-        <div key={idx}>
-            <p>{title}</p>
-
-            <input
-                placeholder="Street"
-                value={input.street || ""}
-                type="text"
-                onChange={({ target }) =>
-                    setInput({ ...input, street: target.value })
-                }
-            />
-            <input
-                placeholder="Nr."
-                value={input.number || ""}
-                type="text"
-                onChange={({ target }) =>
-                    setInput({ ...input, number: target.value })
-                }
-            />
-            <input
-                placeholder="Postcode"
-                value={input.postcode || ""}
-                type="text"
-                onChange={({ target }) =>
-                    setInput({ ...input, postcode: target.value })
-                }
-            />
-            <input
-                placeholder="City"
-                value={input.city || ""}
-                type="text"
-                onChange={({ target }) =>
-                    setInput({ ...input, city: target.value })
-                }
-            />
-            <input
-                placeholder="Coutry"
-                value={input.country || ""}
-                type="text"
-                onChange={({ target }) =>
-                    setInput({ ...input, country: target.value })
-                }
-            />
-            {step < length - 1 && <button onClick={() => next(x)}>Next</button>}
-            {step == length - 1 && (
-                <>
-                    <button onClick={() => submit(x)}>Submit</button>
-                </>
-            )}
-        </div>
-    );
 };

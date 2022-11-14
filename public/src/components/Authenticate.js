@@ -1,15 +1,24 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { gsap } from "gsap";
 
 export default function Authenticate({ type, checkAuth }) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [response, setResponse] = useState();
+    const [data, setData] = useState({});
+    const container = useRef();
+    useEffect(() => {
+        const timeline = gsap.timeline({ defaults: { duration: 1.5 } });
+        timeline.fromTo(
+            container.current,
+            { height: "auto" },
+            { height: "auto" }
+        );
+    }, [type]);
 
     const enter = async () => {
         fetch(`/api/${type}`, {
             headers: { "Content-Type": "application/json" },
             method: "POST",
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ ...data }),
         })
             .then((res) => res.json())
             .then((res) => {
@@ -34,24 +43,59 @@ export default function Authenticate({ type, checkAuth }) {
         return;
     };
     return (
-        <div id="authenticate">
+        <div id="authenticate" ref={container}>
+            {type == "logIn" && <h2>Log In</h2>}
+            {type == "signIn" && (
+                <>
+                    <h2>Sign In</h2>
+                    <div>
+                        <p>Name</p>
+                        <input
+                            required
+                            type="text"
+                            value={data.firstname}
+                            onChange={(e) =>
+                                setData({ ...data, firstname: e.target.value })
+                            }
+                        ></input>
+                    </div>
+                    <div>
+                        <p>Surname</p>
+                        <input
+                            required
+                            type="text"
+                            value={data.lastname}
+                            onChange={(e) =>
+                                setData({ ...data, lastname: e.target.value })
+                            }
+                        ></input>
+                    </div>
+                </>
+            )}
             <div>
                 <p>Email</p>
                 <input
+                    required
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={data.email}
+                    onChange={(e) =>
+                        setData({ ...data, email: e.target.value })
+                    }
                 ></input>
             </div>
             <div>
                 <p>Password</p>
                 <input
+                    required
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={data.password}
+                    onChange={(e) =>
+                        setData({ ...data, password: e.target.value })
+                    }
                 ></input>
             </div>
-            <button onClick={enter}>{type.toUpperCase()}</button>
+
+            <button onClick={enter}>Enter</button>
             {response && <p>{response}</p>}
         </div>
     );

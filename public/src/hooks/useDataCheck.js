@@ -2,21 +2,26 @@ import { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "../globalState/context";
 
 export default function useDataCheck() {
-    const { globalState } = useContext(GlobalContext);
-
-    const [missingData, setMissingData] = useState(false);
+    const { globalState, dispatch } = useContext(GlobalContext);
 
     useEffect(() => {
-        const { username, firstname, lastname, address, role } =
-            globalState.userData;
-        if (!username || !firstname || !lastname || !address || !role) {
-            let temp = [];
-            for (const [key, value] of Object.entries(globalState.userData)) {
-                !value ? (temp = [...temp, key]) : null;
+        if (globalState.userData) {
+            const { username, firstname, lastname, address, role } =
+                globalState.userData;
+            if (!username || !firstname || !lastname || !address || !role) {
+                let temp = [];
+                for (const [key, value] of Object.entries(
+                    globalState.userData
+                )) {
+                    !value ? (temp = [...temp, key]) : null;
+                }
+
+                dispatch({ type: "MISSING_DATA", payload: [...temp] });
+            } else {
+                dispatch({ type: "MISSING_DATA", payload: null });
             }
-            setMissingData(temp);
-        } else setMissingData(false);
+        }
     }, [globalState.userData]);
 
-    return missingData;
+    return;
 }

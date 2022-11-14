@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../globalState/context";
 
 export default function LogOut() {
-    const { globalState, dispatch } = useContext(GlobalContext);
+    const { dispatch } = useContext(GlobalContext);
 
     const clearSession = () => {
-        fetch("/api/logOut", { headers: { Authorization: globalState.token } })
+        fetch("/api/logOut")
             .then((res) => res.json())
             .then((res) => {
                 console.log(res);

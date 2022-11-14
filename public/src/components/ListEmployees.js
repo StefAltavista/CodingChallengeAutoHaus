@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
+import RenderAddress from "./addressRender";
 
 export default function ListEmployees() {
     const { globalState } = useContext(GlobalContext);
     const [employees, setEmployees] = useState();
-    let m = "Missing Information";
+    let m = "Missing";
     let keys = [
         "firstname",
         "lastname",
@@ -26,10 +27,12 @@ export default function ListEmployees() {
                   })
             : null;
     }, [globalState.token]);
+
     return (
         <div id="listComponent">
             <h2>Employees List</h2>
             <div id="listEmployees">
+                {/* to not hard code, could list the keys but would need a parsing function */}
                 <div id="listHead">
                     <p>#</p>
                     <p>Name</p>
@@ -40,50 +43,29 @@ export default function ListEmployees() {
                     <p>Address</p>
                 </div>
                 <div id="list">
-                    {/* to not hard code, could list the keys but would a parsing function */}
                     {employees &&
                         employees.map((x, idx) => {
                             return (
-                                <div key={idx} id="listBody">
+                                <div key={idx} id="row">
                                     <p>{idx + 1}</p>
 
                                     {keys.map((y, idxy) => {
                                         if (y == "address") {
-                                            console.log("now");
-
-                                            if (x[y]) {
-                                                let addressKeys = Object.keys(
-                                                    x[y]
-                                                );
-                                                return (
-                                                    <div
-                                                        key={idxy}
-                                                        id="address"
-                                                    >
-                                                        {addressKeys.map(
-                                                            (z, idxz) => {
-                                                                return (
-                                                                    <p
-                                                                        key={
-                                                                            idxz
-                                                                        }
-                                                                    >
-                                                                        {x[y][
-                                                                            z
-                                                                        ] || ""}
-                                                                    </p>
-                                                                );
-                                                            }
-                                                        )}
-                                                    </div>
-                                                );
-                                            } else return;
+                                            return (
+                                                <RenderAddress
+                                                    row={x}
+                                                    field={y}
+                                                    index={idxy}
+                                                    key={idxy}
+                                                ></RenderAddress>
+                                            );
                                         } else if (y == "_id") {
                                             return null;
                                         } else {
-                                            console.log(y);
                                             return (
-                                                <p key={idxy}>{x[y] || m}</p>
+                                                <div key={idxy}>
+                                                    <p>{x[y] || m}</p>
+                                                </div>
                                             );
                                         }
                                     })}

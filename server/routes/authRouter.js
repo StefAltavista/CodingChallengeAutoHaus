@@ -16,7 +16,7 @@ router.post("/api/signIn", async (req, res) => {
     password = await encryptPassword(password);
     let newUser;
     try {
-        newUser = await db.newUser({ email, password });
+        newUser = await db.newUser(req.body);
     } catch (e) {
         return res.json({ error: "database error" });
     }
@@ -45,7 +45,7 @@ router.get("/api/validate", (req, res) => {
     const response = auth.verification(req.session.access);
     return res.json({ ...response });
 });
-router.get("/api/logOut", auth.requireAuth, async (req, res) => {
+router.get("/api/logOut", async (req, res) => {
     req.session = null;
     res.json({ success: "User succesfully logged out" });
 });

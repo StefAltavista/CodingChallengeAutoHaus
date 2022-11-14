@@ -13,28 +13,18 @@ const connect = (secret) => {
     });
 };
 
-const newUser = async ({ email, password }) => {
+const newUser = async (body) => {
+    console.log("new", body);
     return await tryCatch(() =>
         User.create({
-            email,
-            password,
+            ...body,
         })
     );
 };
 
-const addData = async ({
-    email,
-    username,
-    firstname,
-    lastname,
-    address,
-    role,
-}) => {
+const addData = async (body) => {
     return await tryCatch(() =>
-        User.findOneAndUpdate(
-            { email },
-            { username, firstname, lastname, address, role }
-        )
+        User.findOneAndUpdate({ email: body.email }, { ...body.data })
     );
 };
 const deleteUser = async ({ email }) => {
@@ -67,6 +57,6 @@ const tryCatch = async (fn) => {
         console.log("DB ERROR:", error);
         return error;
     }
-    console.log("DB query successful", success);
+    console.log("DB query successful");
     return success;
 };

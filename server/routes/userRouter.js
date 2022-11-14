@@ -18,7 +18,10 @@ router.post("/api/data", auth.requireAuth, async (req, res) => {
     let user;
     console.log(req.body);
     try {
-        user = await db.addData({ email: req.user.username, ...req.body });
+        user = await db.addData({
+            email: req.user.username,
+            data: { ...req.body },
+        });
     } catch (e) {
         console.log("DB query error");
         return res.json({ error: "DB query error" });
