@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
 import RenderAddress from "./addressRender";
+import EmployeeOverview from "./EmployeeOverview";
+import ModalWrapper from "./ModalWrapper";
 
 export default function ListEmployees() {
     const { globalState } = useContext(GlobalContext);
     const [employees, setEmployees] = useState();
+    const [userOverview, setUserOverview] = useState(false);
     let m = "Missing";
     let keys = [
         "firstname",
@@ -23,7 +26,7 @@ export default function ListEmployees() {
                   .then((res) => res.json())
                   .then((res) => {
                       console.log(res);
-                      setEmployees(res);
+                      setEmployees(res.reverse());
                   })
             : null;
     }, [globalState.token]);
@@ -42,11 +45,25 @@ export default function ListEmployees() {
                     <p>E-mail</p>
                     <p>Address</p>
                 </div>
+                {userOverview && (
+                    <ModalWrapper close={() => setUserOverview(false)}>
+                        <EmployeeOverview
+                            userid={userOverview}
+                            id="employeeModal"
+                        />
+                    </ModalWrapper>
+                )}
                 <div id="list">
                     {employees &&
                         employees.map((x, idx) => {
                             return (
-                                <div key={idx} id="row">
+                                <div
+                                    key={idx}
+                                    id="row"
+                                    onClick={() => {
+                                        setUserOverview(employees[idx]._id);
+                                    }}
+                                >
                                     <p>{idx + 1}</p>
 
                                     {keys.map((y, idxy) => {

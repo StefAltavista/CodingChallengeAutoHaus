@@ -8,10 +8,10 @@ export default async function useSetUser(token) {
         })
             .then((res) => res.json())
             .then((res) => {
+                dispatch({ type: "SET_TOKEN", payload: token });
                 dispatch({
                     type: "SET_USER",
                     payload: {
-                        token,
                         userData: {
                             email: res.email,
                             username: res.username,

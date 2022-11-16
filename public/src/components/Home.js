@@ -6,9 +6,14 @@ import useDataCheck from "../hooks/useDataCheck";
 import ModalWrapper from "./ModalWrapper";
 
 export default function Home() {
-    const { globalState, dispatch } = useContext(GlobalContext);
+    const { globalState } = useContext(GlobalContext);
     const [submitted, setSubmitted] = useState(false);
-    useDataCheck();
+    const check = useDataCheck();
+
+    useEffect(() => {
+        check();
+        console.log("check");
+    }, [globalState.userData]);
 
     return (
         <>
@@ -27,6 +32,11 @@ export default function Home() {
             ) : (
                 <ListEmployees></ListEmployees>
             )}
+            {submitted && globalState.missingData ? (
+                <div id="completeProfile" onClick={() => setSubmitted(false)}>
+                    <p>Complete your profile</p>
+                </div>
+            ) : null}
         </>
     );
 }

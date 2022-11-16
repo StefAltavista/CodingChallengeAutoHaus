@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
-import ProfilePage from "./profilePage";
+import EmployeeOverview from "./EmployeeOverview";
 import useSetUser from "../hooks/useSetUser";
 import Banner from "./Banner";
 
@@ -18,7 +18,11 @@ export default function App({ token }) {
                         <Route
                             exact
                             path="/profile"
-                            element={<ProfilePage></ProfilePage>}
+                            element={
+                                <EmployeeOverview
+                                    userid={null}
+                                ></EmployeeOverview>
+                            }
                         />
                     </Routes>
                 </BrowserRouter>

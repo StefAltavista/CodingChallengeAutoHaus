@@ -13,7 +13,7 @@ router.post("/api/signIn", async (req, res) => {
     if (await emailExists(email)) {
         return res.json({ error: "Email already in use" });
     }
-    password = await encryptPassword(password);
+    req.body.password = await encryptPassword(password);
     let newUser;
     try {
         newUser = await db.newUser(req.body);
@@ -35,7 +35,7 @@ router.post("/api/logIn", async (req, res) => {
         return res.json({ error: "Wrong Email" });
     }
     if (await decryptPassword(password, user.password)) {
-        const token = auth.createToken(email);
+        const token = auth.createToken(user._id);
         req.session.access = token;
         return res.json({ success: true });
     } else res.json({ error: "Wrong Password" });

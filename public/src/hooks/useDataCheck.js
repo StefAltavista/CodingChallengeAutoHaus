@@ -3,13 +3,13 @@ import { GlobalContext } from "../globalState/context";
 
 export default function useDataCheck() {
     const { globalState, dispatch } = useContext(GlobalContext);
+    let temp = [];
 
-    useEffect(() => {
+    const check = () => {
         if (globalState.userData) {
             const { username, firstname, lastname, address, role } =
                 globalState.userData;
             if (!username || !firstname || !lastname || !address || !role) {
-                let temp = [];
                 for (const [key, value] of Object.entries(
                     globalState.userData
                 )) {
@@ -21,7 +21,7 @@ export default function useDataCheck() {
                 dispatch({ type: "MISSING_DATA", payload: null });
             }
         }
-    }, [globalState.userData]);
+    };
 
-    return;
+    return check;
 }

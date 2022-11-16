@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, use } from "react";
 import { Link } from "react-router-dom";
 import LogOut from "./LogOut";
 import AddEmployee from "./AddEmployee";
-
 export default function Banner() {
     const [addEmployee, setAddEmployee] = useState(false);
     return (

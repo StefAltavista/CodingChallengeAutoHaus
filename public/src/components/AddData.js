@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
 import AddressForm from "./addressForm";
+import useDataCheck from "../hooks/useDataCheck";
 
-export default function AddData({ submitted, user, user_Id }) {
+export default function AddData({ submitted, user, user_Id, newUser }) {
     const { globalState, dispatch } = useContext(GlobalContext);
     const [step, setStep] = useState(0);
     const [data, setData] = useState();
@@ -37,8 +38,11 @@ export default function AddData({ submitted, user, user_Id }) {
                 console.log("here", res);
                 if (res.success) {
                     user == "this"
-                        ? dispatch({ type: "SET_USER", payload: { data } })
-                        : null;
+                        ? dispatch({
+                              type: "SET_USER",
+                              payload: { userData: { ...data, [x]: input } },
+                          })
+                        : newUser({ ...data, [x]: input });
                     setStep(0);
                     submitted();
                 } else {

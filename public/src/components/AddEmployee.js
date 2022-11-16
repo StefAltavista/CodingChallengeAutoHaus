@@ -34,6 +34,10 @@ export default function AddEmployee({ closeModal }) {
                             "Ops! Something went wrong, please try again"
                         );
                 } else if (res.success) {
+                    setData({
+                        ...data,
+                        password: data.firstname + data.lastname,
+                    });
                     setNewUserId(res.success._id);
                     setStep(step + 1);
                 } else {
@@ -46,6 +50,12 @@ export default function AddEmployee({ closeModal }) {
         <ModalWrapper id="addEmployeeModal" close={closeModal}>
             <h1>Register new employee</h1>
             {step == 0 && (
+                <div id="addEmployeeType">
+                    <div onClick={() => setStep(1)}>Add Employee Manually</div>
+                    <div>Add CSV List</div>
+                </div>
+            )}
+            {step == 1 && (
                 <div>
                     <>
                         <p>Name</p>
@@ -81,12 +91,39 @@ export default function AddEmployee({ closeModal }) {
                     {response && <p>{response}</p>}
                 </div>
             )}
-            {step == 1 && (
+            {step == 2 && (
                 <AddData
                     user_Id={newUserId}
                     submitted={() => setStep(step + 1)}
                     user="newUser"
+                    newUser={(x) => setData({ ...data, ...x })}
                 ></AddData>
+            )}
+            {step == 3 && (
+                <>
+                    <p>New user successfully added</p>
+                    <p>
+                        We sent an email to {data.email} with the access
+                        password
+                    </p>{" "}
+                    {/* not implemented*/}
+                    <p>Name: {data.firstname}</p>
+                    <p>Surname: {data.lastname}</p>
+                    <p>Username: {data.username}</p>
+                    <p>E-Mail: {data.email}</p>
+                    <p>Role: {data.role}</p>
+                    <p>Password: {data.password}</p>
+                    <button onClick={() => setStep(1)}>Change Info</button>
+                    <button
+                        onClick={() => {
+                            setData({});
+                            setStep(0);
+                        }}
+                    >
+                        New employee
+                    </button>
+                    <button onClick={close}>close</button>
+                </>
             )}
         </ModalWrapper>
     );

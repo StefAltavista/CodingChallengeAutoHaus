@@ -10,6 +10,11 @@ router.get("/api/employees", auth.requireAuth, async (req, res) => {
     res.json(list);
 });
 
+router.get("/api/employee", auth.requireAuth, async (req, res) => {
+    const user = await db.findUser({ _id: req.headers.userid });
+    res.json(user[0]);
+});
+
 router.post("/api/newemployee", auth.requireAuth, async (req, res) => {
     let { email, password } = req.body;
     if (!email || !password) {
@@ -18,7 +23,7 @@ router.post("/api/newemployee", auth.requireAuth, async (req, res) => {
     if (await emailExists(email)) {
         return res.json({ error: "Email already in use" });
     }
-    password = await encryptPassword(password);
+    req.body.password = await encryptPassword(password);
     let newUser;
     try {
         newUser = await db.newUser(req.body);
@@ -29,7 +34,6 @@ router.post("/api/newemployee", auth.requireAuth, async (req, res) => {
     res.json({ success: newUser });
 });
 router.post("/api/employeedata", auth.requireAuth, async (req, res) => {
-    console.log(req.headers);
     let user;
     try {
         user = await db.addData({
