@@ -5,25 +5,30 @@
 }
 
 body {
-    /* background-color: rgb(241, 250, 253); */
     color: rgb(7, 30, 66);
 }
 a {
-    /* color: whitesmoke; */
+    color: inherit;
     text-decoration: none;
 }
 button {
     color: rgb(0, 57, 81);
 }
 #close {
+    padding: 5px;
     position: absolute;
     right: 15px;
     top: -5px;
     cursor: pointer;
+    transition: 500ms;
+}
+#close:hover {
+    background-color: rgb(154, 178, 224);
+    color: aliceblue;
 }
 
 #modalBackground {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -48,6 +53,10 @@ button {
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+#note {
+    font-size: 11px;
 }
 
 /* ---------- Authentication ------------ */
@@ -128,21 +137,33 @@ button {
     margin: 0px 20px 0px 20px;
     border-bottom: 1px solid black;
 }
-#banner a {
-    color: aliceblue;
+#home {
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: 500ms;
+    cursor: pointer;
+}
+#home:hover {
+    color: rgb(81, 99, 132);
+    background-color: aliceblue;
 }
 
 #comands div {
     border-left: 1px solid aliceblue;
     padding-left: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    padding-right: 10px;
+    transition: 500ms;
 }
 #comands {
     display: flex;
     flex-direction: row;
     /* justify-content: space-between; */
 }
-#comands div {
-    margin-left: 10px;
+#comands div:hover {
+    color: rgb(81, 99, 132);
+    background-color: aliceblue;
 }
 /* ---------- Add Data Modal ------------ */
 
@@ -215,7 +236,7 @@ button {
     margin: 0;
 }
 
-#employeeOverview #address {
+#employeeOverview #address #address {
     display: flex;
 }
 #employeeOverview #address p {
@@ -230,6 +251,7 @@ button {
     border-radius: 10px;
     width: 700px;
     height: 500px;
+    overflow: scroll;
 }
 
 #employeeModal {

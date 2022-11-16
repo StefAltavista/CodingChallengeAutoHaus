@@ -7,9 +7,12 @@ export default function Banner() {
     return (
         <>
             <div id="banner">
-                <Link to="/">
-                    <p>Home</p>
-                </Link>
+                <div id="home">
+                    <Link to="/">
+                        <h3>Memberteam</h3>
+                    </Link>
+                </div>
+
                 <div id="comands">
                     <div onClick={() => setAddEmployee(true)}>
                         <p>Add Employee</p>

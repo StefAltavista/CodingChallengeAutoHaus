@@ -48,4 +48,9 @@ router.post("/api/employeedata", auth.requireAuth, async (req, res) => {
 
     res.json({ success: user });
 });
+
+router.post("/api/csvlist", auth.requireAuth, async (req, res) => {
+    console.log("body:", req.body);
+});
+
 module.exports = router;

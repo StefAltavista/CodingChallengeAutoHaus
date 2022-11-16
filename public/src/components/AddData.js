@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
-import AddressForm from "./addressForm";
-import useDataCheck from "../hooks/useDataCheck";
+import AddressForm from "./AddressForm";
 
 export default function AddData({ submitted, user, user_Id, newUser }) {
     const { globalState, dispatch } = useContext(GlobalContext);

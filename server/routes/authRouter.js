@@ -6,8 +6,8 @@ const { emailExists } = require("../utils/emailExists");
 const { encryptPassword, decryptPassword } = require("../utils/cryptPass.js");
 
 router.post("/api/signIn", async (req, res) => {
-    let { email, password } = req.body;
-    if (!email || !password) {
+    let { email, password, firstname, lastname } = req.body;
+    if (!email || !password || !firstname || !lastname) {
         return res.json({ error: "parameter missing" });
     }
     if (await emailExists(email)) {

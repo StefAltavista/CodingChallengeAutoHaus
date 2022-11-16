@@ -2,10 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 
 export default function Authenticate({ type, checkAuth }) {
+    const initialState = {
+        email: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+    };
     const [response, setResponse] = useState();
-    const [data, setData] = useState({});
+    const [data, setData] = useState(initialState);
     const container = useRef();
     useEffect(() => {
+        setResponse(null);
+        setData(initialState);
         const timeline = gsap.timeline({ defaults: { duration: 1.5 } });
         timeline.fromTo(
             container.current,
@@ -26,9 +34,7 @@ export default function Authenticate({ type, checkAuth }) {
                     if (res.error == "Email already in use") {
                         setResponse(res.error);
                     } else if (res.error == "parameter missing") {
-                        setResponse(
-                            "You need to provide both Email and Password"
-                        );
+                        setResponse("Please fill the whole form!");
                     } else
                         setResponse(
                             "Ops! Something went wrong, please try again"

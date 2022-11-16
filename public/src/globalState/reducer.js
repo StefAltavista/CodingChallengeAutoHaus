@@ -1,6 +1,4 @@
 export default function globalReducer(state, action) {
-    console.log("reducer action: ", action);
-
     switch (action.type) {
         case "SET_TOKEN":
             return { ...state, token: action.payload };

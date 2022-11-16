@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RenderAddress({ user }) {
+export default function AddressRender({ user }) {
     if (user.address) {
         let addressKeys = Object.keys(user.address);
         return (

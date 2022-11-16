@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Authenticate from "./Authenticate";
-import Expired from "./expired";
+import Expired from "./Expired";
 import { gsap } from "gsap";
 
 export default function Welcome({ status, checkAuth }) {

@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
-import RenderAddress from "./addressRender";
+import AddressRender from "./AddressRender";
 
 export default function EmployeeOverview({ userid }) {
     const { globalState } = useContext(GlobalContext);
     const [employee, setEmployee] = useState(null);
+    let m = "No data";
     useEffect(() => {
         if (userid) {
             fetch("/api/employee", {
@@ -16,7 +17,6 @@ export default function EmployeeOverview({ userid }) {
                     setEmployee(res);
                 });
         } else {
-            console.log(globalState.userData);
             setEmployee(globalState.userData);
         }
     }, [globalState.userData]);
@@ -25,20 +25,20 @@ export default function EmployeeOverview({ userid }) {
             {employee && (
                 <div id="employeeOverview">
                     <div id="header">
-                        <h1>{employee.username || "No UserName"}</h1>
-                        <h3>{employee.role || "No Role"}</h3>
+                        <h1>
+                            {employee.firstname} {employee.lastname}
+                        </h1>
+                        <h3>{employee.role || m}</h3>
                     </div>
                     <div>
-                        <p>Name: {employee.firstname} </p>
-                        <p>Surame: {employee.lastname} </p>
+                        <p>Username: {employee.username || m} </p>
                         <p>E-mail: {employee.email} </p>
-                        <div id="address">
-                            <p>Address: </p>
-                            <RenderAddress
-                                user={employee}
-                                field={"address"}
-                            ></RenderAddress>
-                        </div>
+
+                        <p>Address: </p>
+                        <AddressRender
+                            user={employee}
+                            field={"address"}
+                        ></AddressRender>
                     </div>
                 </div>
             )}

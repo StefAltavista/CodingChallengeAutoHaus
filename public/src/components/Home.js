@@ -12,7 +12,6 @@ export default function Home() {
 
     useEffect(() => {
         check();
-        console.log("check");
     }, [globalState.userData]);
 
     return (

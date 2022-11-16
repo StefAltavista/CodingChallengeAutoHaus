@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../globalState/context";
-import RenderAddress from "./addressRender";
+import AddressRender from "./AddressRender";
 import EmployeeOverview from "./EmployeeOverview";
 import ModalWrapper from "./ModalWrapper";
 
-export default function ListEmployees() {
+export default function ListEmployees({ list }) {
     const { globalState } = useContext(GlobalContext);
     const [employees, setEmployees] = useState();
     const [userOverview, setUserOverview] = useState(false);
@@ -19,13 +19,15 @@ export default function ListEmployees() {
     ];
 
     useEffect(() => {
+        if (list) {
+            return setEmployees(list);
+        }
         globalState.token
             ? fetch("/api/employees", {
                   headers: { Authorization: globalState.token },
               })
                   .then((res) => res.json())
                   .then((res) => {
-                      console.log(res);
                       setEmployees(res.reverse());
                   })
             : null;
@@ -46,11 +48,11 @@ export default function ListEmployees() {
                     <p>Address</p>
                 </div>
                 {userOverview && (
-                    <ModalWrapper close={() => setUserOverview(false)}>
-                        <EmployeeOverview
-                            userid={userOverview}
-                            id="employeeModal"
-                        />
+                    <ModalWrapper
+                        id="employeeModal"
+                        close={() => setUserOverview(false)}
+                    >
+                        <EmployeeOverview userid={userOverview} />
                     </ModalWrapper>
                 )}
                 <div id="list">
@@ -69,10 +71,10 @@ export default function ListEmployees() {
                                     {keys.map((y, idxy) => {
                                         if (y == "address") {
                                             return (
-                                                <RenderAddress
+                                                <AddressRender
                                                     user={x}
                                                     key={idxy}
-                                                ></RenderAddress>
+                                                ></AddressRender>
                                             );
                                         } else if (y == "_id") {
                                             return null;
