@@ -1,5 +1,4 @@
 MEMBERTEAM:
-Autohaus-Royal coding challenge
 
 To Start - Development mode:
 
@@ -26,6 +25,4 @@ the password of the newly created account is aways gonna be Name+Surname
 Add Employees via CSV
 The <AddCsv/> component is based on the structure sent to me by Autohaus. A german CSV without email addresses.
 
-Session Expires in 30 minutes.
 
-Most of the cyber-security checks have NOT been implemented.
